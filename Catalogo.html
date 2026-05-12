@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="Catalogo de perforaciones con detalle de materiales y precios.">
+	<title>Catalogo de Perforaciones</title>
+	<link rel="stylesheet" href="css/Catalogo.css">
+	<link rel="stylesheet" href="css/theme-scroll.css">
+</head>
+<body>
+	<button class="hamburger-toggle" id="hamburgerToggle" type="button" aria-expanded="false" aria-controls="hamburgerMenu" aria-label="Abrir menu">
+		<span></span>
+		<span></span>
+		<span></span>
+	</button>
+
+	<nav class="hamburger-menu" id="hamburgerMenu" aria-label="Menu de navegacion">
+		<a href="index.html">Inicio</a>
+		<a href="Catalogo.html" aria-current="page">Catalogo Perforaciones</a>
+		<a href="Catalogo-piercing.html">Catalogo piercing</a>
+		<a href="Indicaciones.html">Indicaciones</a>
+	</nav>
+
+	<header class="site-header">
+		<a class="brand" href="index.html" aria-label="Volver al inicio">
+			<img src="assets/Logo.png" alt="Logo del negocio">
+		</a>
+	</header>
+
+	<main>
+		<section class="catalog-screen" id="catalogScreen" aria-label="Catalogo">
+			<div class="catalog-content">
+				<div class="catalog-header">
+					<span class="eyebrow">Catalogo</span>
+					<h1>Piezas seleccionadas para tu estilo.</h1>
+				</div>
+
+				<div class="catalog-controls" aria-label="Buscador y filtros">
+					<label class="control-field" for="searchInput">
+						<span>Buscar perforacion</span>
+						<input id="searchInput" type="search" placeholder="Ejemplo: helix, nariz, industrial" autocomplete="off">
+					</label>
+					<label class="control-field" for="zoneFilter">
+						<span>Filtrar por zona</span>
+						<select id="zoneFilter">
+							<option value="all">Todas las zonas</option>
+							<option value="oreja">Oreja</option>
+							<option value="nariz">Nariz</option>
+							<option value="ceja">Ceja</option>
+							<option value="boca">Boca</option>
+							<option value="corporal">Corporal</option>
+						</select>
+					</label>
+				</div>
+
+				<p class="results-count" id="resultsCount" aria-live="polite"></p>
+
+				<div class="catalog-grid" id="catalogGrid"></div>
+			</div>
+		</section>
+	</main>
+
+		<div class="product-detail" id="productDetail" aria-hidden="true">
+			<div class="product-detail-card" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+				<button class="detail-close" id="detailClose" type="button" aria-label="Cerrar detalle">x</button>
+				<div class="detail-image-wrap">
+					<img class="detail-image" id="detailImage" alt="Imagen de la perforacion" decoding="async">
+				</div>
+				<p class="detail-kicker">Detalle de perforacion</p>
+				<h2 id="detailTitle">Pieza</h2>
+				<p class="detail-description" id="detailDescription"></p>
+				<p class="detail-zone" id="detailZone">Zona:</p>
+				<ul class="detail-prices">
+					<li>Acero quirurgico: <strong id="priceSteel">C$450</strong></li>
+					<li>Acero de lujo: <strong id="priceLuxurySteel">C$550</strong></li>
+					<li>Titanio: <strong id="priceTitanium">C$750+</strong></li>
+				</ul>
+				<div class="detail-whatsapp" role="alert">
+					<p>Managua, Nicaragua | <a id="whatsappTextLink" href="https://wa.me/50584272274" target="_blank" rel="noopener noreferrer">Para mas informacion, escribe al WhatsApp.</a></p>
+					<a id="whatsappFloatLink" href="https://wa.me/50584272274?text=Hola%2C%20quisiera%20mas%20informacion" class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp">WhatsApp</a>
+				</div>
+			</div>
+		</div>
+
+	<script src="js/navigation.js" defer></script>
+	<script src="js/theme-scroll.js" defer></script>
+	<script src="js/Catologo.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="Estudio de perforaciones con información de nosotros, nuestro trabajo, indicaciones y contacto.">
+	<title>Inicio | Studio de Perforaciones</title>
+	<link rel="stylesheet" href="css/Index.css">
+	<link rel="stylesheet" href="css/theme-scroll.css">
+	<noscript>
+		<style>
+			.intro-screen {
+				display: none;
+			}
+
+			body.is-loading {
+				overflow: auto;
+			}
+		</style>
+	</noscript>
+</head>
+<body class="is-loading">
+	<div class="intro-screen" id="introScreen" aria-label="Animacion de entrada">
+		<div class="intro-card">
+			<img src="assets/Logo.png" alt="Logo del negocio">
+			<p>Bienvenido al estudio</p>
+		</div>
+	</div>
+
+	<button class="hamburger-toggle" id="hamburgerToggle" type="button" aria-expanded="false" aria-controls="hamburgerMenu" aria-label="Abrir menu">
+		<span></span>
+		<span></span>
+		<span></span>
+	</button>
+
+	<nav class="hamburger-menu" id="hamburgerMenu" aria-label="Menu de navegacion">
+		<a href="index.html">Inicio</a>
+		<a href="Catalogo.html">Catalogo Perforaciones</a>
+		<a href="Catalogo-piercing.html">Catalogo piercing</a>
+		<a href="Indicaciones.html">Indicaciones</a>
+	</nav>
+
+	<header class="site-header">
+		<a class="brand" href="#inicio" aria-label="Ir al inicio">
+			<img src="assets/Logo.png" alt="Logo del negocio">
+		</a>
+	</header>
+
+	<main>
+		<section class="hero section reveal" id="inicio">
+			<div class="hero-copy">
+				<span class="eyebrow">Perforaciones con estilo</span>
+				<h1>Sobre nosotros</h1>
+				<p>
+					Somos un estudio dedicado a perforaciones y accesorios con una atención cercana,
+					acabados limpios y asesoria para que cada pieza combine con tu estilo.
+				</p>
+				<div class="hero-actions">
+					<a class="primary-action" href="Catalogo.html">Ver catalogo de perforaciones</a>
+					<a class="secondary-action" href="Catalogo-piercing.html">Ver catalogo piercing</a>
+				</div>
+			</div>
+
+			<div class="hero-card">
+				<img src="assets/Logo.png" alt="Logo del estudio">
+				<div>
+					<strong>Atencion personalizada</strong>
+					<p>Agenda, asesoria y seguimiento por WhatsApp.</p>
+				</div>
+			</div>
+		</section>
+		<section class="section work reveal" id="trabajo">
+			<div class="section-heading">
+				<span class="eyebrow">Proceso</span>
+				<h2>Nuestro trabajo</h2>
+			</div>
+
+			<div class="work-grid">
+				<article>
+            
+					<h3>Asesoria</h3>
+					<p>Te ayudamos a elegir la pieza y la zona segun tu estilo y necesidades.</p>
+				</article>
+				<article>
+					<h3>Aplicacion</h3>
+					<p>Buscamos una experiencia ordenada, con limpieza visual y atencion al detalle.</p>
+				</article>
+				<article>
+					<h3>Seguimiento</h3>
+					<p>Te compartimos indicaciones claras para el cuidado y la recuperacion.</p>
+				</article>
+			</div>
+		</section>
+
+		<section class="section catalog-links reveal" aria-label="Catalogos disponibles">
+			<div class="section-heading">
+				<span class="eyebrow">Explora</span>
+					<h2>Catalogos</h2>
+			</div>
+			<div class="catalog-cards">
+				<a class="catalog-card" href="Catalogo.html">
+					<span>Catalogo Perforaciones</span>
+					<strong>Ver piezas y precios</strong>
+					<p>Encuentra opciones por zona, estilo y materiales.</p>
+				</a>
+				<a class="catalog-card" href="Catalogo-piercing.html">
+					<span>Catalogo piercing</span>
+						<strong>Proximamente actualizado</strong>
+						<p>Una seccion dedicada a la coleccion de piercing.</p>
+				</a>
+			</div>
+		</section>
+
+		<section class="section contact reveal" id="contacto">
+			<div class="section-heading">
+				<span class="eyebrow">Contacto</span>
+				<h2>Contacto</h2>
+			</div>
+				<p>
+					Managua, Nicaragua. Escribenos para resolver dudas, pedir orientacion o consultar disponibilidad.
+				</p>
+			<a class="contact-link" href="https://wa.me/50584272274" target="_blank" rel="noopener noreferrer">WhatsApp: +505 8427 2274</a>
+		</section>
+	</main>
+
+	<script src="js/navigation.js" defer></script>
+	<script src="js/theme-scroll.js" defer></script>
+	<script src="js/Index.js" defer></script>
+</body>
+</html>
