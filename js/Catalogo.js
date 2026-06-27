@@ -1,4 +1,3 @@
-const page = document.querySelector(".page");
 const catalogGrid = document.getElementById("catalogGrid");
 const searchInput = document.getElementById("searchInput");
 const zoneFilter = document.getElementById("zoneFilter");
@@ -291,8 +290,6 @@ const applyFilters = () => {
 
 window.addEventListener("load", () => {
   applyFilters();
-
-  page.classList.add("show-catalog");
 });
 
 const openDetail = (product) => {
