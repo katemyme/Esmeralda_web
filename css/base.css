@@ -36,96 +36,166 @@ a {
   top: 18px;
   right: 18px;
   z-index: 30;
-  width: 46px;
-  height: 46px;
-  border: 1px solid var(--stroke);
-  border-radius: 10px;
-  background: var(--card-bg);
+  width: 50px;
+  height: 50px;
+  border: none;
+  border-radius: 50%;
+  background: var(--green-primary);
   cursor: pointer;
-  padding: 10px;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  box-shadow: var(--shadow);
-  transition: border-color 180ms ease, box-shadow 180ms ease;
+  justify-content: center;
+  gap: 5px;
+  box-shadow: 0 4px 20px rgba(24, 128, 74, 0.40);
+  transition: background 200ms ease, box-shadow 200ms ease, transform 200ms ease;
 }
 
 .hamburger-toggle:hover {
-  border-color: var(--green-primary);
-  box-shadow: var(--shadow-md);
+  background: var(--green-deep);
+  box-shadow: 0 6px 28px rgba(24, 128, 74, 0.52);
+  transform: scale(1.08);
 }
 
 .hamburger-toggle span {
   display: block;
-  width: 100%;
   height: 2px;
-  margin: 5px 0;
   border-radius: 999px;
-  background: var(--text);
-  transition: transform 180ms ease, opacity 180ms ease;
+  background: #FFFFFF;
+  transition: transform 230ms ease, opacity 230ms ease, width 230ms ease;
 }
 
-.hamburger-menu {
-  position: fixed;
-  top: 0;
-  right: -300px;
-  z-index: 25;
-  width: 280px;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 80px 16px 20px;
-  background: var(--card-bg);
-  border-left: 1px solid var(--stroke);
-  box-shadow: -8px 0 48px rgba(14, 92, 52, 0.12);
-  transition: right 280ms ease;
-  overflow-y: auto;
-}
+.hamburger-toggle span:nth-child(1) { width: 20px; }
+.hamburger-toggle span:nth-child(2) { width: 13px; align-self: flex-end; margin-right: 15px; }
+.hamburger-toggle span:nth-child(3) { width: 20px; }
 
-.hamburger-menu.active {
-  right: 0;
-}
-
-.hamburger-menu a {
-  width: 100%;
-  padding: 12px 16px;
-  border-radius: 8px;
-  color: var(--text-muted);
-  border: 1px solid transparent;
-  font-size: 0.95rem;
-  font-weight: 500;
-  transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
-  text-align: left;
-}
-
-.hamburger-menu a:hover,
-.hamburger-menu a:focus-visible {
-  color: var(--green-primary);
-  background: var(--green-light);
-  border-color: var(--stroke);
-  outline: none;
-}
-
-.hamburger-menu a[aria-current="page"] {
-  color: var(--green-deep);
-  background: var(--green-light);
-  border-color: var(--stroke);
-  font-weight: 600;
+body.hamburger-open .hamburger-toggle {
+  background: rgba(255, 255, 255, 0.14);
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.20);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 
 body.hamburger-open .hamburger-toggle span:nth-child(1) {
+  width: 20px;
   transform: translateY(7px) rotate(45deg);
 }
 
 body.hamburger-open .hamburger-toggle span:nth-child(2) {
   opacity: 0;
+  transform: scaleX(0);
 }
 
 body.hamburger-open .hamburger-toggle span:nth-child(3) {
+  width: 20px;
   transform: translateY(-7px) rotate(-45deg);
 }
+
+/* ── Menu overlay full-screen ───────────────────────── */
+
+.hamburger-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 25;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  counter-reset: nav-counter;
+  overflow: hidden;
+  background: var(--green-deep);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 340ms ease;
+}
+
+.hamburger-menu::before {
+  content: "";
+  position: absolute;
+  top: -22vw;
+  right: -22vw;
+  width: 62vw;
+  height: 62vw;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  pointer-events: none;
+}
+
+.hamburger-menu::after {
+  content: "";
+  position: absolute;
+  bottom: -16vw;
+  left: -16vw;
+  width: 48vw;
+  height: 48vw;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  pointer-events: none;
+}
+
+.hamburger-menu.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+@keyframes navLinkIn {
+  from { opacity: 0; transform: translateY(32px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.hamburger-menu a {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 12px 48px;
+  font-family: var(--font-serif);
+  font-size: clamp(1.8rem, 5.5vw, 3.6rem);
+  color: rgba(255, 255, 255, 0.68);
+  letter-spacing: -0.01em;
+  opacity: 0;
+  transform: translateY(32px);
+  transition: color 200ms ease;
+  border: none;
+  background: none;
+}
+
+.hamburger-menu a::before {
+  counter-increment: nav-counter;
+  content: "0" counter(nav-counter);
+  font-family: var(--font-sans);
+  font-size: 0.60rem;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  color: rgba(255, 255, 255, 0.22);
+  margin-bottom: 3px;
+  line-height: 1;
+}
+
+.hamburger-menu a:hover,
+.hamburger-menu a:focus-visible {
+  color: #FFFFFF;
+  outline: none;
+  text-decoration: underline;
+  text-underline-offset: 8px;
+  text-decoration-color: rgba(255, 255, 255, 0.28);
+  text-decoration-thickness: 1px;
+}
+
+.hamburger-menu a[aria-current="page"] {
+  color: #FFFFFF;
+}
+
+.hamburger-menu.active a {
+  animation: navLinkIn 500ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.hamburger-menu.active a:nth-child(1) { animation-delay:  70ms; }
+.hamburger-menu.active a:nth-child(2) { animation-delay: 140ms; }
+.hamburger-menu.active a:nth-child(3) { animation-delay: 210ms; }
+.hamburger-menu.active a:nth-child(4) { animation-delay: 280ms; }
 
 /* ── Header ─────────────────────────────────────────── */
 
@@ -138,7 +208,7 @@ body.hamburger-open .hamburger-toggle span:nth-child(3) {
   justify-content: flex-start;
   gap: 14px;
   padding: 10px clamp(16px, 3vw, 32px);
-  background: rgba(250, 253, 249, 0.95);
+  background: rgba(250, 246, 239, 0.95);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--stroke);
 }
@@ -359,6 +429,13 @@ main {
 
   .section {
     border-radius: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hamburger-menu a {
+    padding: 10px 24px;
+    font-size: clamp(1.5rem, 7.5vw, 2rem);
   }
 }
 
