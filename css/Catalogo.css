@@ -291,10 +291,7 @@ body.detail-open .hamburger-menu {
 /* ── Controles ──────────────────────────────────────── */
 
 .catalog-controls {
-  display: grid;
-  grid-template-columns: 1.5fr 1fr;
-  gap: 12px;
-  margin-bottom: 14px;
+  margin-bottom: 10px;
 }
 
 .control-field {
@@ -343,6 +340,7 @@ body.detail-open .hamburger-menu {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 14px;
+  transition: opacity 220ms ease, transform 220ms ease;
 }
 
 .product-card {
@@ -359,9 +357,9 @@ body.detail-open .hamburger-menu {
 
 .product-card:hover,
 .product-card:focus-visible {
-  transform: translateY(-3px);
+  transform: translateY(-7px);
   border-color: var(--green-primary);
-  box-shadow: var(--shadow-hover);
+  box-shadow: 0 18px 52px rgba(14, 92, 52, 0.17);
   outline: none;
 }
 
@@ -409,14 +407,6 @@ body.detail-open .hamburger-menu {
   object-fit: cover;
 }
 
-.product-preview::after {
-  content: "";
-  position: absolute;
-  inset: 10px;
-  border-radius: 6px;
-  border: 1px dashed var(--stroke);
-  pointer-events: none;
-}
 
 .product-preview.emerald {
   background: linear-gradient(135deg, var(--green-mint), var(--green-light));
@@ -621,6 +611,121 @@ body.detail-open .hamburger-menu {
   transform: translateY(-1px);
 }
 
+/* ── Filtros de zona (pills) ─────────────────────────── */
+
+.zone-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+  animation: pageSlideIn 500ms cubic-bezier(0.22, 1, 0.36, 1) 120ms both;
+}
+
+.zone-pill {
+  display: inline-flex;
+  align-items: center;
+  height: 34px;
+  padding: 0 16px;
+  border-radius: 999px;
+  border: 1px solid var(--stroke-gray);
+  background: var(--card-bg);
+  color: var(--text-muted);
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 150ms ease, background 150ms ease,
+              color 150ms ease, box-shadow 150ms ease, transform 150ms ease;
+}
+
+.zone-pill:hover {
+  border-color: var(--green-primary);
+  color: var(--green-primary);
+  transform: translateY(-1px);
+}
+
+.zone-pill.active {
+  background: var(--green-primary);
+  border-color: var(--green-primary);
+  color: #FFFFFF;
+  box-shadow: 0 3px 12px rgba(24, 128, 74, 0.32);
+}
+
+/* ── Animaciones de entrada ──────────────────────────── */
+
+@keyframes pageSlideIn {
+  from { opacity: 0; transform: translateY(-14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(22px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0)   scale(1); }
+}
+
+@keyframes modalCardIn {
+  from { opacity: 0; transform: translateY(36px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0)    scale(1); }
+}
+
+.catalog-header {
+  animation: pageSlideIn 500ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.catalog-controls {
+  animation: pageSlideIn 500ms cubic-bezier(0.22, 1, 0.36, 1) 60ms both;
+}
+
+.product-detail.show .product-detail-card {
+  animation: modalCardIn 400ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ── Badge de zona en tarjeta ────────────────────────── */
+
+.card-zone {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 8px;
+  border-radius: 4px;
+  font-size: 0.63rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--green-deep);
+  background: rgba(250, 252, 248, 0.92);
+  border: 1px solid var(--stroke);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+/* ── Estado vacío ────────────────────────────────────── */
+
+.catalog-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 72px 24px;
+  animation: cardIn 400ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.catalog-empty strong {
+  display: block;
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.catalog-empty p {
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  margin: 0;
+}
+
 /* ── Responsive ─────────────────────────────────────── */
 
 @media (max-width: 480px) {
@@ -633,10 +738,11 @@ body.detail-open .hamburger-menu {
 @media (max-width: 640px) {
   .catalog-screen { padding: 16px; }
   .catalog-content { padding-top: 66px; }
-  .catalog-controls { grid-template-columns: 1fr; }
   .catalog-grid { grid-template-columns: 1fr; gap: 10px; }
   .product-preview { height: 140px; }
   .product-card { padding: 14px; border-radius: 10px; }
+  .zone-filters { gap: 6px; }
+  .zone-pill { height: 30px; font-size: 0.78rem; padding: 0 12px; }
   .product-detail { place-items: start center; padding: 10px; }
   .product-detail-card { width: 100%; max-height: calc(100dvh - 20px); border-radius: 14px; }
   .product-detail-card h2 { font-size: 1.5rem; }

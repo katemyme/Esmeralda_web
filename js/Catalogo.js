@@ -1,74 +1,35 @@
-const catalogGrid = document.getElementById("catalogGrid");
-const searchInput = document.getElementById("searchInput");
-const zoneFilter = document.getElementById("zoneFilter");
-const resultsCount = document.getElementById("resultsCount");
-const productDetail = document.getElementById("productDetail");
-const detailClose = document.getElementById("detailClose");
-const detailTitle = document.getElementById("detailTitle");
+// ── DOM ──────────────────────────────────────────────────────────────────────
+
+const catalogGrid      = document.getElementById("catalogGrid");
+const searchInput      = document.getElementById("searchInput");
+const resultsCount     = document.getElementById("resultsCount");
+const productDetail    = document.getElementById("productDetail");
+const detailClose      = document.getElementById("detailClose");
+const detailTitle      = document.getElementById("detailTitle");
 const detailDescription = document.getElementById("detailDescription");
-const detailZone = document.getElementById("detailZone");
-const priceSteel = document.getElementById("priceSteel");
+const detailZone       = document.getElementById("detailZone");
+const priceSteel       = document.getElementById("priceSteel");
 const priceLuxurySteel = document.getElementById("priceLuxurySteel");
-const priceTitanium = document.getElementById("priceTitanium");
-const detailImage = document.getElementById("detailImage");
-const whatsappTextLink = document.getElementById("whatsappTextLink");
+const priceTitanium    = document.getElementById("priceTitanium");
+const detailImage      = document.getElementById("detailImage");
+const whatsappTextLink  = document.getElementById("whatsappTextLink");
 const whatsappFloatLink = document.getElementById("whatsappFloatLink");
+const zonePills        = document.querySelectorAll(".zone-pill");
+
+// ── Estado ───────────────────────────────────────────────────────────────────
 
 const whatsappPhoneNumber = "50584272274";
+let activeZone = "all";
+let filterTimer;
 
-const createPlaceholderImage = (name, zone) => {
-  const label = escapeSvgText(name);
-  const subtitle = escapeSvgText(zoneLabels[zone] || "Perforacion");
-  const svg = `
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 560" role="img" aria-label="${label}">
-      <defs>
-        <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stop-color="#F2FAF5" />
-          <stop offset="100%" stop-color="#E6F4EC" />
-        </linearGradient>
-      </defs>
-      <rect width="800" height="560" rx="36" fill="url(#g)" />
-      <circle cx="650" cy="120" r="110" fill="rgba(24, 128, 74, 0.10)" />
-      <circle cx="140" cy="430" r="150" fill="rgba(14, 92, 52, 0.06)" />
-      <rect x="78" y="78" width="644" height="404" rx="28" fill="none" stroke="rgba(24, 128, 74, 0.22)" stroke-width="4" stroke-dasharray="14 14" />
-      <text x="50%" y="47%" fill="#0E5C34" font-family="Segoe UI, Arial, sans-serif" font-size="54" font-weight="700" text-anchor="middle">${label}</text>
-      <text x="50%" y="57%" fill="#4A6355" font-family="Segoe UI, Arial, sans-serif" font-size="24" text-anchor="middle">${subtitle}</text>
-      <text x="50%" y="72%" fill="#18804A" font-family="Segoe UI, Arial, sans-serif" font-size="20" text-anchor="middle">Espacio para imagen</text>
-    </svg>`;
+// ── Datos ────────────────────────────────────────────────────────────────────
 
-  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
-};
-
-const getProductImage = (product) => product.image?.trim() || createPlaceholderImage(product.name, product.zone);
-
-const formatCurrency = (value, plus = false) => `C$${value}${plus ? "+" : ""}`;
-
-const isValidPrice = (value) => Number.isFinite(value) && value > 0;
-
-const escapeSvgText = (value) =>
-  String(value)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/\"/g, "&quot;")
-    .replace(/'/g, "&apos;");
-
-const getAvailablePrices = (prices) =>
-  [
-    { label: "Acero quirurgico", value: prices?.steel, plus: false },
-    { label: "Acero de lujo", value: prices?.luxurySteel, plus: false },
-    { label: "Titanio", value: prices?.titanium, plus: true },
-  ].filter((entry) => isValidPrice(entry.value));
-
-const getPreviewPrice = (prices) => {
-  const availablePrices = getAvailablePrices(prices);
-
-  if (availablePrices.length === 0) {
-    return "Precio no disponible";
-  }
-
-  const min = availablePrices.reduce((lowest, entry) => Math.min(lowest, entry.value), availablePrices[0].value);
-  return availablePrices.length === 1 ? formatCurrency(min) : `Desde ${formatCurrency(min)}`;
+const zoneLabels = {
+  oreja:    "Oreja",
+  nariz:    "Nariz",
+  ceja:     "Ceja",
+  boca:     "Boca",
+  corporal: "Corporal",
 };
 
 const products = [
@@ -109,7 +70,7 @@ const products = [
     zone: "oreja",
     preview: "white",
     image: "",
-    description: "Detalle pequeno con gran personalidad.",
+    description: "Detalle pequeño con gran personalidad.",
     prices: { steel: 550, titanium: 770 },
   },
   {
@@ -125,16 +86,15 @@ const products = [
     zone: "nariz",
     preview: "emerald",
     image: "",
-    description: "Un clasico versatil con presencia sutil.",
+    description: "Un clásico versátil con presencia sutil.",
     prices: { steel: 450, titanium: 750 },
   },
-
   {
     name: "Ceja",
     zone: "ceja",
     preview: "black",
     image: "",
-    description: "Toque urbano para una imagen mas atrevida.",
+    description: "Toque urbano para una imagen más atrevida.",
     prices: { steel: 450, luxurySteel: 650, titanium: 750 },
   },
   {
@@ -142,7 +102,7 @@ const products = [
     zone: "nariz",
     preview: "emerald",
     image: "",
-    description: "Diseno frontal que destaca con fuerza visual.",
+    description: "Diseño frontal que destaca con fuerza visual.",
     prices: { steel: 550, titanium: 850 },
   },
   {
@@ -150,7 +110,7 @@ const products = [
     zone: "boca",
     preview: "white",
     image: "",
-    description: "Pieza audaz para un estilo autentico.",
+    description: "Pieza audaz para un estilo auténtico.",
     prices: { steel: 550, luxurySteel: 650, titanium: 850 },
   },
   {
@@ -166,7 +126,7 @@ const products = [
     zone: "oreja",
     preview: "emerald",
     image: "",
-    description: "Doble perforacion para una estetica contundente.",
+    description: "Doble perforación para una estética contundente.",
     prices: { steel: 450, luxurySteel: 650, titanium: 850 },
   },
   {
@@ -174,7 +134,7 @@ const products = [
     zone: "oreja",
     preview: "white",
     image: "",
-    description: "Diseno minimalista que combina con todo.",
+    description: "Diseño minimalista que combina con todo.",
     prices: { steel: 450, luxurySteel: 550, titanium: 750 },
   },
   {
@@ -182,7 +142,7 @@ const products = [
     zone: "corporal",
     preview: "black",
     image: "",
-    description: "Linea limpia para una apariencia futurista.",
+    description: "Línea limpia para una apariencia futurista.",
     prices: { titanium: 1200 },
   },
   {
@@ -194,47 +154,107 @@ const products = [
     prices: { steel: 450, luxurySteel: 550, titanium: 1100 },
   },
   {
-    name: "Pezon",
+    name: "Pezón",
     zone: "corporal",
     preview: "white",
     image: "",
-    description: "Opciones discretas o bold segun tu estilo.",
+    description: "Opciones discretas o bold según tu estilo.",
     prices: { luxurySteel: 750, titanium: 2200 },
   },
 ];
 
-const zoneLabels = {
-  oreja: "Oreja",
-  nariz: "Nariz",
-  ceja: "Ceja",
-  boca: "Boca",
-  corporal: "Corporal",
+// ── Helpers ───────────────────────────────────────────────────────────────────
+
+const escapeSvgText = (value) =>
+  String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&apos;");
+
+const createPlaceholderImage = (name, zone) => {
+  const label    = escapeSvgText(name);
+  const subtitle = escapeSvgText(zoneLabels[zone] || "Perforación");
+  const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 560" role="img" aria-label="${label}">
+      <defs>
+        <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#F2FAF5" />
+          <stop offset="100%" stop-color="#E6F4EC" />
+        </linearGradient>
+      </defs>
+      <rect width="800" height="560" rx="36" fill="url(#g)" />
+      <circle cx="650" cy="120" r="110" fill="rgba(24, 128, 74, 0.10)" />
+      <circle cx="140" cy="430" r="150" fill="rgba(14, 92, 52, 0.06)" />
+      <text x="50%" y="47%" fill="#0E5C34" font-family="Segoe UI, Arial, sans-serif" font-size="54" font-weight="700" text-anchor="middle">${label}</text>
+      <text x="50%" y="57%" fill="#4A6355" font-family="Segoe UI, Arial, sans-serif" font-size="24" text-anchor="middle">${subtitle}</text>
+      <text x="50%" y="72%" fill="#18804A" font-family="Segoe UI, Arial, sans-serif" font-size="20" text-anchor="middle">Espacio para imagen</text>
+    </svg>`;
+  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
 };
 
-const renderResultsCount = (count) => {
-  if (!resultsCount) {
-    return;
-  }
+const getProductImage = (product) =>
+  product.image?.trim() || createPlaceholderImage(product.name, product.zone);
 
+const formatCurrency = (value, plus = false) => `C$${value}${plus ? "+" : ""}`;
+
+const isValidPrice = (value) => Number.isFinite(value) && value > 0;
+
+const getAvailablePrices = (prices) =>
+  [
+    { label: "Acero quirúrgico", value: prices?.steel,        plus: false },
+    { label: "Acero de lujo",    value: prices?.luxurySteel,  plus: false },
+    { label: "Titanio",          value: prices?.titanium,     plus: true  },
+  ].filter((e) => isValidPrice(e.value));
+
+const getPreviewPrice = (prices) => {
+  const list = getAvailablePrices(prices);
+  if (!list.length) return "Precio no disponible";
+  const min = list.reduce((m, e) => Math.min(m, e.value), list[0].value);
+  return list.length === 1 ? formatCurrency(min) : `Desde ${formatCurrency(min)}`;
+};
+
+// ── Render ────────────────────────────────────────────────────────────────────
+
+const renderResultsCount = (count) => {
+  if (!resultsCount) return;
   resultsCount.textContent =
-    count === 0 ? "No se encontraron perforaciones con ese filtro." : `${count} perforaciones disponibles.`;
+    count === 0
+      ? "No se encontraron perforaciones con ese filtro."
+      : `${count} perforaciones disponibles.`;
 };
 
 const renderCatalog = (items) => {
-  if (!catalogGrid) {
+  if (!catalogGrid) return;
+
+  // Estado vacío
+  if (items.length === 0) {
+    const empty = document.createElement("div");
+    empty.className = "catalog-empty";
+    empty.innerHTML =
+      `<strong>Sin resultados</strong>` +
+      `<p>Intenta con otro término o cambia el filtro de zona.</p>`;
+    catalogGrid.replaceChildren(empty);
+    renderResultsCount(0);
     return;
   }
 
   const fragment = document.createDocumentFragment();
 
-  items.forEach((product) => {
+  items.forEach((product, index) => {
     const card = document.createElement("article");
     card.className = "product-card";
     card.setAttribute("role", "button");
     card.setAttribute("tabindex", "0");
-    card.setAttribute("aria-label", `Ver detalle de ${product.name} en zona ${zoneLabels[product.zone]}`);
+    card.setAttribute("aria-label",
+      `Ver detalle de ${product.name} en zona ${zoneLabels[product.zone]}`);
     card.dataset.product = product.name;
+    // Stagger de entrada: máximo 440ms para que la lista no sea interminable
+    card.style.animation =
+      `cardIn 440ms cubic-bezier(0.22, 1, 0.36, 1) ${Math.min(index * 55, 440)}ms both`;
 
+    // Preview (imagen / placeholder)
     const preview = document.createElement("div");
     preview.className = `product-preview ${product.preview}`;
 
@@ -244,8 +264,13 @@ const renderCatalog = (items) => {
     previewImage.alt = product.name;
     previewImage.decoding = "async";
     previewImage.loading = "lazy";
-
     preview.appendChild(previewImage);
+
+    // Badge de zona sobre la imagen
+    const zoneBadge = document.createElement("span");
+    zoneBadge.className = "card-zone";
+    zoneBadge.textContent = zoneLabels[product.zone];
+    preview.appendChild(zoneBadge);
 
     const title = document.createElement("h2");
     title.textContent = product.name;
@@ -265,91 +290,95 @@ const renderCatalog = (items) => {
   renderResultsCount(items.length);
 };
 
+// ── Filtrado ──────────────────────────────────────────────────────────────────
+
 const getFilteredProducts = () => {
   const query = (searchInput?.value || "").trim().toLowerCase();
-  const selectedZone = zoneFilter?.value || "all";
 
   return products.filter((product) => {
-    const matchZone = selectedZone === "all" || product.zone === selectedZone;
-    if (!matchZone) {
-      return false;
-    }
-
-    if (!query) {
-      return true;
-    }
-
-    const searchableText = `${product.name} ${product.description} ${zoneLabels[product.zone]}`.toLowerCase();
-    return searchableText.includes(query);
+    const matchZone = activeZone === "all" || product.zone === activeZone;
+    if (!matchZone) return false;
+    if (!query) return true;
+    const text = `${product.name} ${product.description} ${zoneLabels[product.zone]}`.toLowerCase();
+    return text.includes(query);
   });
 };
 
 const applyFilters = () => {
-  renderCatalog(getFilteredProducts());
-};
-
-window.addEventListener("load", () => {
-  applyFilters();
-});
-
-const openDetail = (product) => {
-  if (!product) {
+  // Primera carga: renderizar directamente con stagger
+  if (!catalogGrid.children.length) {
+    renderCatalog(getFilteredProducts());
     return;
   }
 
+  // Filtrado posterior: fundido de salida → re-render → fundido de entrada
+  catalogGrid.style.opacity = "0";
+  catalogGrid.style.transform = "translateY(8px)";
+
+  clearTimeout(filterTimer);
+  filterTimer = setTimeout(() => {
+    renderCatalog(getFilteredProducts());
+    requestAnimationFrame(() => {
+      catalogGrid.style.opacity = "";
+      catalogGrid.style.transform = "";
+    });
+  }, 220);
+};
+
+// ── Detalle de producto ───────────────────────────────────────────────────────
+
+const openDetail = (product) => {
+  if (!product) return;
+
   const availablePrices = getAvailablePrices(product.prices);
 
-  detailTitle.textContent = product.name;
+  detailTitle.textContent       = product.name;
   detailDescription.textContent = product.description;
-  detailZone.textContent = `Zona: ${zoneLabels[product.zone]}`;
+  detailZone.textContent        = `Zona: ${zoneLabels[product.zone]}`;
 
   if (detailImage) {
     detailImage.src = getProductImage(product);
     detailImage.alt = `Imagen de ${product.name}`;
   }
 
-  const whatsappMessage = `Hola, quisiera mas informacion sobre ${product.name} (${zoneLabels[product.zone]}).`;
-  const whatsappHref = `https://wa.me/${whatsappPhoneNumber}?text=${encodeURIComponent(whatsappMessage)}`;
+  const msg  = `Hola, quisiera más información sobre ${product.name} (${zoneLabels[product.zone]}).`;
+  const href = `https://wa.me/${whatsappPhoneNumber}?text=${encodeURIComponent(msg)}`;
+  if (whatsappTextLink)  whatsappTextLink.href  = href;
+  if (whatsappFloatLink) whatsappFloatLink.href = href;
 
-  if (whatsappTextLink) {
-    whatsappTextLink.href = whatsappHref;
-  }
-
-  if (whatsappFloatLink) {
-    whatsappFloatLink.href = whatsappHref;
-  }
-
-  const hamburgerMenu = document.getElementById("hamburgerMenu");
+  // Cerrar menú si estaba abierto
+  const hamburgerMenu   = document.getElementById("hamburgerMenu");
   const hamburgerToggle = document.getElementById("hamburgerToggle");
-
   hamburgerMenu?.classList.remove("active");
   document.body.classList.remove("hamburger-open");
   hamburgerToggle?.setAttribute("aria-expanded", "false");
 
+  // Precios
   const priceRows = [
-    { element: priceSteel, label: "Acero quirurgico", price: product.prices.steel, plus: false },
-    { element: priceLuxurySteel, label: "Acero de lujo", price: product.prices.luxurySteel, plus: false },
-    { element: priceTitanium, label: "Titanio", price: product.prices.titanium, plus: true },
+    { element: priceSteel,       price: product.prices.steel,        plus: false },
+    { element: priceLuxurySteel, price: product.prices.luxurySteel,  plus: false },
+    { element: priceTitanium,    price: product.prices.titanium,     plus: true  },
   ];
 
   priceRows.forEach((row) => {
-    const listItem = row.element.closest("li");
-    if (!listItem) {
-      return;
-    }
-
+    const li = row.element?.closest("li");
+    if (!li) return;
     if (isValidPrice(row.price)) {
-      row.element.textContent = formatCurrency(row.price, row.plus);
-      listItem.style.display = "list-item";
+      row.element.textContent  = formatCurrency(row.price, row.plus);
+      li.style.display = "flex";
     } else {
-      listItem.style.display = "none";
+      li.style.display = "none";
     }
   });
 
-  if (availablePrices.length === 0) {
-    detailDescription.textContent = `${product.description} No hay precios disponibles para mostrar.`;
+  if (!availablePrices.length) {
+    detailDescription.textContent =
+      `${product.description} No hay precios disponibles para mostrar.`;
   }
 
+  // Forzar re-trigger de la animación del modal
+  productDetail.classList.remove("show");
+  void productDetail.offsetWidth; // reflow
   productDetail.classList.add("show");
   productDetail.setAttribute("aria-hidden", "false");
   document.body.classList.add("detail-open");
@@ -366,47 +395,48 @@ const closeDetail = () => {
 
 const getProductByCard = (target) => {
   const card = target.closest(".product-card");
-  if (!card) {
-    return null;
-  }
-
-  return products.find((item) => item.name === card.dataset.product) || null;
+  if (!card) return null;
+  return products.find((p) => p.name === card.dataset.product) || null;
 };
 
-catalogGrid?.addEventListener("click", (event) => {
-  const product = getProductByCard(event.target);
-  if (product) {
-    openDetail(product);
-  }
+// ── Eventos ───────────────────────────────────────────────────────────────────
+
+window.addEventListener("load", () => {
+  applyFilters();
 });
 
-catalogGrid?.addEventListener("keydown", (event) => {
-  if (event.key !== "Enter" && event.key !== " ") {
-    return;
-  }
-
-  const product = getProductByCard(event.target);
-  if (!product) {
-    return;
-  }
-
-  event.preventDefault();
-  openDetail(product);
+zonePills.forEach((pill) => {
+  pill.addEventListener("click", () => {
+    zonePills.forEach((p) => p.classList.remove("active"));
+    pill.classList.add("active");
+    activeZone = pill.dataset.zone;
+    applyFilters();
+  });
 });
 
 searchInput?.addEventListener("input", applyFilters);
-zoneFilter?.addEventListener("change", applyFilters);
+
+catalogGrid?.addEventListener("click", (e) => {
+  const product = getProductByCard(e.target);
+  if (product) openDetail(product);
+});
+
+catalogGrid?.addEventListener("keydown", (e) => {
+  if (e.key !== "Enter" && e.key !== " ") return;
+  const product = getProductByCard(e.target);
+  if (!product) return;
+  e.preventDefault();
+  openDetail(product);
+});
 
 detailClose?.addEventListener("click", closeDetail);
 
-productDetail?.addEventListener("click", (event) => {
-  if (event.target === productDetail) {
-    closeDetail();
-  }
+productDetail?.addEventListener("click", (e) => {
+  if (e.target === productDetail) closeDetail();
 });
 
-window.addEventListener("keydown", (event) => {
-  if (event.key === "Escape" && productDetail?.classList.contains("show")) {
+window.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && productDetail?.classList.contains("show")) {
     closeDetail();
   }
 });
@@ -415,8 +445,8 @@ const initNav = () => {
   window.setupHamburgerNavigation?.();
 };
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initNav);
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initNav);
 } else {
   initNav();
 }

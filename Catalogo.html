@@ -37,22 +37,20 @@
 					<h1>Piezas seleccionadas para tu estilo.</h1>
 				</div>
 
-				<div class="catalog-controls" aria-label="Buscador y filtros">
+				<div class="catalog-controls">
 					<label class="control-field" for="searchInput">
-						<span>Buscar perforacion</span>
-						<input id="searchInput" type="search" placeholder="Ejemplo: helix, nariz, industrial" autocomplete="off">
+						<span>Buscar</span>
+						<input id="searchInput" type="search" placeholder="Helix, nariz, industrial…" autocomplete="off">
 					</label>
-					<label class="control-field" for="zoneFilter">
-						<span>Filtrar por zona</span>
-						<select id="zoneFilter">
-							<option value="all">Todas las zonas</option>
-							<option value="oreja">Oreja</option>
-							<option value="nariz">Nariz</option>
-							<option value="ceja">Ceja</option>
-							<option value="boca">Boca</option>
-							<option value="corporal">Corporal</option>
-						</select>
-					</label>
+				</div>
+
+				<div class="zone-filters" role="group" aria-label="Filtrar por zona">
+					<button class="zone-pill active" data-zone="all" type="button">Todas</button>
+					<button class="zone-pill" data-zone="oreja" type="button">Oreja</button>
+					<button class="zone-pill" data-zone="nariz" type="button">Nariz</button>
+					<button class="zone-pill" data-zone="ceja" type="button">Ceja</button>
+					<button class="zone-pill" data-zone="boca" type="button">Boca</button>
+					<button class="zone-pill" data-zone="corporal" type="button">Corporal</button>
 				</div>
 
 				<p class="results-count" id="resultsCount" aria-live="polite"></p>
