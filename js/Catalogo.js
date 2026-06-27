@@ -23,17 +23,17 @@ const createPlaceholderImage = (name, zone) => {
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 560" role="img" aria-label="${label}">
       <defs>
         <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stop-color="#0b0b0b" />
-          <stop offset="100%" stop-color="#1b1b1b" />
+          <stop offset="0%" stop-color="#F2FAF5" />
+          <stop offset="100%" stop-color="#E6F4EC" />
         </linearGradient>
       </defs>
       <rect width="800" height="560" rx="36" fill="url(#g)" />
-      <circle cx="650" cy="120" r="110" fill="rgba(24, 213, 140, 0.18)" />
-      <circle cx="140" cy="430" r="150" fill="rgba(255, 255, 255, 0.06)" />
-      <rect x="78" y="78" width="644" height="404" rx="28" fill="none" stroke="rgba(255, 255, 255, 0.14)" stroke-width="4" stroke-dasharray="14 14" />
-      <text x="50%" y="47%" fill="#f7f7f7" font-family="Segoe UI, Arial, sans-serif" font-size="54" font-weight="700" text-anchor="middle">${label}</text>
-      <text x="50%" y="57%" fill="rgba(247, 247, 247, 0.78)" font-family="Segoe UI, Arial, sans-serif" font-size="24" text-anchor="middle">${subtitle}</text>
-      <text x="50%" y="72%" fill="#18d58c" font-family="Segoe UI, Arial, sans-serif" font-size="20" text-anchor="middle">Espacio para imagen manual</text>
+      <circle cx="650" cy="120" r="110" fill="rgba(24, 128, 74, 0.10)" />
+      <circle cx="140" cy="430" r="150" fill="rgba(14, 92, 52, 0.06)" />
+      <rect x="78" y="78" width="644" height="404" rx="28" fill="none" stroke="rgba(24, 128, 74, 0.22)" stroke-width="4" stroke-dasharray="14 14" />
+      <text x="50%" y="47%" fill="#0E5C34" font-family="Segoe UI, Arial, sans-serif" font-size="54" font-weight="700" text-anchor="middle">${label}</text>
+      <text x="50%" y="57%" fill="#4A6355" font-family="Segoe UI, Arial, sans-serif" font-size="24" text-anchor="middle">${subtitle}</text>
+      <text x="50%" y="72%" fill="#18804A" font-family="Segoe UI, Arial, sans-serif" font-size="20" text-anchor="middle">Espacio para imagen</text>
     </svg>`;
 
   return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
