@@ -330,35 +330,180 @@ body.is-ready .intro-screen {
   margin-top: 4px;
 }
 
-/* ── Contacto ───────────────────────────────────────── */
-
-.contact-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 52px;
-  padding: 0 28px;
-  border-radius: 8px;
-  font-weight: 700;
-  font-size: 0.96rem;
-  margin-top: 20px;
-  background: var(--green-primary);
-  color: #FFFFFF;
-  box-shadow: 0 4px 18px rgba(24, 128, 74, 0.28);
-  transition: background 160ms ease, box-shadow 160ms ease, transform 160ms ease;
-}
-
-.contact-link:hover,
-.contact-link:focus-visible {
-  background: var(--green-deep);
-  box-shadow: 0 8px 28px rgba(24, 128, 74, 0.38);
-  transform: translateY(-1px);
-  outline: none;
-}
+/* ── Seccion de contacto ─────────────────────────────── */
 
 .contact p {
   color: var(--text-muted);
   line-height: 1.75;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+.contact-title {
+  margin: 12px 0 14px;
+  font-family: var(--font-serif);
+  font-size: clamp(1.7rem, 4vw, 2.6rem);
+  line-height: 1.15;
+  color: var(--green-deep);
+}
+
+.contact-data {
+  list-style: none;
+  padding: 0;
+  margin: 28px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.contact-icon-wrap {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--green-light);
+  color: var(--green-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contact-item-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.contact-item-text span {
+  font-size: 0.74rem;
+  color: var(--text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+  font-weight: 600;
+}
+
+.contact-item-text strong {
+  color: var(--text);
+  font-weight: 600;
+  font-size: 0.94rem;
+}
+
+/* ── Tarjeta del formulario ──────────────────────────── */
+
+.contact-card {
+  background: var(--card-bg);
+  border-radius: 16px;
+  border: 1px solid var(--stroke-gray);
+  box-shadow: var(--shadow-md);
+  padding: 32px;
+}
+
+.contact-form {
+  display: grid;
+  gap: 18px;
+}
+
+.form-field {
+  display: grid;
+  gap: 6px;
+}
+
+.form-field label {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 14px;
+  border: 1px solid var(--stroke-gray);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.94rem;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.form-field select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%234A6355' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+}
+
+.form-field textarea {
+  min-height: auto;
+  resize: vertical;
+  line-height: 1.65;
+}
+
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+  outline: none;
+  border-color: var(--green-primary);
+  box-shadow: 0 0 0 3px rgba(24, 128, 74, 0.12);
+}
+
+.form-error {
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: #FEF2F2;
+  border: 1px solid #FECACA;
+  color: #B91C1C;
+  font-size: 0.86rem;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.form-submit {
+  width: 100%;
+  min-height: 50px;
+  padding: 0 24px;
+  border: none;
+  border-radius: 8px;
+  background: var(--green-primary);
+  color: #FFFFFF;
+  font: inherit;
+  font-size: 0.96rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  box-shadow: 0 4px 18px rgba(24, 128, 74, 0.30);
+  transition: background 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.form-submit:hover,
+.form-submit:focus-visible {
+  background: var(--green-deep);
+  box-shadow: 0 8px 28px rgba(24, 128, 74, 0.40);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.form-submit:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 10px rgba(24, 128, 74, 0.28);
 }
 
 /* ── Responsive ─────────────────────────────────────── */
@@ -376,6 +521,11 @@ body.is-ready .intro-screen {
 
   .gallery-grid {
     grid-template-columns: 1fr;
+  }
+
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
   }
 }
 
